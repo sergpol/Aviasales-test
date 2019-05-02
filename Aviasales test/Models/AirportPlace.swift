@@ -7,9 +7,9 @@
 //
 
 import Foundation
-typealias Route = [PurpleRoute]
+typealias Route = [AirportPlace]
 
-struct PurpleRoute: Codable {
+struct AirportPlace: Codable {
     let cases: Cases?
     let iata: String
     let coordinates: [Double]

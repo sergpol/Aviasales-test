@@ -11,7 +11,7 @@ import UIKit
 class SearchViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     
-    var places: [PurpleRoute] = []
+    var places: [AirportPlace] = []
     var searchController = UISearchController(searchResultsController: nil)
     
     override func viewDidLoad() {

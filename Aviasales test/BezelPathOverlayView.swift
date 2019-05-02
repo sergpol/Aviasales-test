@@ -14,11 +14,9 @@ class BezelPathOverlayView: NSObject, MKOverlay {
     
     var boundingMapRect: MKMapRect
     var coordinate: CLLocationCoordinate2D
-    var t: CGFloat
     
-    init(polyline: MKPolyline, t: CGFloat) {
+    init(polyline: MKPolyline) {
         boundingMapRect = polyline.boundingMapRect
         coordinate = polyline.coordinate
-        self.t = t
     }
 }

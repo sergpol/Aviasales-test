@@ -13,10 +13,15 @@ import MapKit
 class SearchResultViewController: UIViewController {
     @IBOutlet weak var mapView: MKMapView!
     
-    var place: PurpleRoute!
+    var spbCoordinate = CLLocationCoordinate2D(latitude: 59.806084, longitude: 30.3083)
+    var placeCoordinate: CLLocationCoordinate2D!
+    var place: AirportPlace! {
+        didSet {
+            placeCoordinate = CLLocationCoordinate2D(latitude: place.location.lat, longitude: place.location.lon)
+        }
+    }
     var line = CAShapeLayer()
     var planeImageView = UIImageView()
-    var planeImageViewIsAdded = false
     var animation = CAKeyframeAnimation(keyPath: "position")
     
     var startPoint: CGPoint = .zero
@@ -28,31 +33,28 @@ class SearchResultViewController: UIViewController {
         mapView.delegate = self
         
         let spbPointAnnotation = MKPointAnnotation()
-        let spbCoordinate = CLLocationCoordinate2D(latitude: 59.806084, longitude: 30.3083)
         spbPointAnnotation.coordinate = spbCoordinate
         spbPointAnnotation.title = "LED"
         mapView.addAnnotation(spbPointAnnotation)
         
         let pointAnnotation = MKPointAnnotation()
-        let coordinate = CLLocationCoordinate2D(latitude: place.location.lat, longitude: place.location.lon)
-        pointAnnotation.coordinate = coordinate
+        pointAnnotation.coordinate = placeCoordinate
         pointAnnotation.title = place.iata
         mapView.addAnnotation(pointAnnotation)
         
         let points: [CLLocationCoordinate2D]
-        points = [spbCoordinate, coordinate]
+        points = [spbCoordinate, placeCoordinate]
         let polyline = MKPolyline(coordinates: points, count: 2)
         
         let rect = polyline.boundingMapRect
         //var region = MKCoordinateRegion(rect)
-       
         //region.span = MKCoordinateSpan(latitudeDelta: 10, longitudeDelta: 10)
-        mapView.setVisibleMapRect(rect, edgePadding: UIEdgeInsets(top: 30, left: 30, bottom: 30, right: 30), animated: true)
+        mapView.setVisibleMapRect(rect, edgePadding: UIEdgeInsets(top: 60, left: 60, bottom: 60, right: 60), animated: true)
         
         startPoint = mapView.convert(spbCoordinate, toPointTo: view)
-        finishPoint = mapView.convert(coordinate, toPointTo: view)
+        finishPoint = mapView.convert(placeCoordinate, toPointTo: view)
         
-        mapView.addOverlay(polyline)
+        //mapView.addOverlay(polyline)
         
         planeImageView.frame = CGRect(x: startPoint.x - 14, y: startPoint.y - 14, width: 28, height: 28)
         planeImageView.image = UIImage(named: "plane")
@@ -63,10 +65,10 @@ class SearchResultViewController: UIViewController {
         //planeImageView.layer.add(animation, forKey: "path")
         view.addSubview(planeImageView)
     
-        let bezelPathOverlay = BezelPathOverlayView(polyline: polyline, t: 0)
+        let bezelPathOverlay = BezelPathOverlayView(polyline: polyline)
         self.mapView.addOverlay(bezelPathOverlay)
         
-        //drawBezelPath()
+        drawBezelPath()
 //        UIView.animate(withDuration: 3, delay: 1, options: [], animations: {
 //            planeImageView.frame = CGRect(x: finishPoint.x - 14, y: finishPoint.y - 14, width: 28, height: 28)
 //        }, completion: nil)
@@ -78,24 +80,18 @@ class SearchResultViewController: UIViewController {
     
     func drawBezelPath() {
         line.removeFromSuperlayer()
-        planeImageView.removeFromSuperview()
-        
-        let spbCoordinate = CLLocationCoordinate2D(latitude: 59.806084, longitude: 30.3083)
-        let coordinate = CLLocationCoordinate2D(latitude: place.location.lat, longitude: place.location.lon)
+        //planeImageView.removeFromSuperview()
         
         startPoint = mapView.convert(spbCoordinate, toPointTo: view)
-        finishPoint = mapView.convert(coordinate, toPointTo: view)
+        finishPoint = mapView.convert(placeCoordinate, toPointTo: view)
         
         planeImageView.frame = CGRect(x: startPoint.x - 14, y: startPoint.y - 14, width: 28, height: 28)
-        if !planeImageViewIsAdded {
-            view.addSubview(planeImageView)
-        }
         
         let bezelPath = UIBezierPath()
         bezelPath.move(to: startPoint)
         
-        let coeff: CGFloat = startPoint.x < finishPoint.x ? finishPoint.x : -startPoint.x
-        bezelPath.addCurve(to: finishPoint, controlPoint1: CGPoint(x: startPoint.x + coeff, y: startPoint.y), controlPoint2: CGPoint(x: finishPoint.x - coeff, y: finishPoint.y))
+        let k: CGFloat = startPoint.x < finishPoint.x ? finishPoint.x : -startPoint.x
+        bezelPath.addCurve(to: finishPoint, controlPoint1: CGPoint(x: startPoint.x + k, y: startPoint.y), controlPoint2: CGPoint(x: finishPoint.x - k, y: finishPoint.y))
         //bezelPath.close()
         
         line = CAShapeLayer()
@@ -108,7 +104,7 @@ class SearchResultViewController: UIViewController {
         view.layer.addSublayer(line)
         animation.path = bezelPath.cgPath
         
-        line.isHidden = false
+        line.isHidden = true
         
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: {
             self.planeImageView.isHidden = false
@@ -120,7 +116,7 @@ class SearchResultViewController: UIViewController {
 extension SearchResultViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         if let myOverlay = overlay as? BezelPathOverlayView {
-            let renderer = BezelPathOverlayRenderer(overlay: myOverlay, place: place, startPoint: startPoint, finishPoint: finishPoint, plainImabeView: planeImageView, t: myOverlay.t)
+            let renderer = BezelPathOverlayRenderer(overlay: myOverlay, startPoint: startPoint, finishPoint: finishPoint)
             return renderer
         }
         return MKOverlayRenderer()
@@ -136,5 +132,15 @@ extension SearchResultViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
         drawBezelPath()
         //planeImageView.layer.speed = 1
+    }
+    
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        if let title = annotation.title {
+            let myAnnotationView = MyAnnotationView()
+            myAnnotationView.titleLabel.text = "\(title ?? "")"
+            return myAnnotationView
+        }
+        
+        return MKAnnotationView(annotation: annotation, reuseIdentifier: "annotation")
     }
 }

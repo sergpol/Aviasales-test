@@ -14,7 +14,7 @@ class NetworkComponents: ResponseHandler {
     static var shared = NetworkComponents()
     private let apiService = MoyaProvider<API>(plugins: [NetworkLoggerPlugin(verbose: true)])
     
-    func searchPlace(place: String, completion: @escaping (Result<[PurpleRoute], ErrorResponse>) -> Void) {
+    func searchPlace(place: String, completion: @escaping (Result<[AirportPlace], ErrorResponse>) -> Void) {
         apiService.request(.searchPlace(placeName: place)) { result in
             self.handle(result, completion: completion)
         }

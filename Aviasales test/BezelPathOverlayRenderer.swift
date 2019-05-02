@@ -9,23 +9,17 @@
 import Foundation
 import MapKit
 
-class BezelPathOverlayRenderer: MKPolylineRenderer {
-    var place: PurpleRoute!
+class BezelPathOverlayRenderer: MKOverlayRenderer {
     var startPoint: CGPoint!
     var finishPoint: CGPoint!
-    var plainImabeView: UIImageView!
-    var t: CGFloat = 0
     
     override init(overlay: MKOverlay) {
         super.init(overlay: overlay)
     }
     
-    init(overlay: MKOverlay, place: PurpleRoute, startPoint: CGPoint, finishPoint: CGPoint, plainImabeView: UIImageView, t: CGFloat) {
-        self.place = place
+    init(overlay: MKOverlay, startPoint: CGPoint, finishPoint: CGPoint) {
         self.startPoint = startPoint
         self.finishPoint = finishPoint
-        self.plainImabeView = plainImabeView
-        self.t = t
         
         super.init(overlay: overlay)
     }
@@ -36,7 +30,7 @@ class BezelPathOverlayRenderer: MKPolylineRenderer {
         
         let startPoint1 = normalPosition ? CGPoint.zero : CGPoint(x: overlay.boundingMapRect.width, y: 0)
         let finishPoint1 = normalPosition ? CGPoint(x: overlay.boundingMapRect.width, y: overlay.boundingMapRect.height) : CGPoint(x: 0, y: overlay.boundingMapRect.height)
-        let coeff = normalPosition ? unit : -unit
+        let k = normalPosition ? unit : -unit
         
 //        let bezierPath = UIBezierPath()
 //        bezierPath.move(to: startPoint1)
@@ -46,23 +40,16 @@ class BezelPathOverlayRenderer: MKPolylineRenderer {
         context.setLineJoin(.round)
         context.setLineWidth(5 / CGFloat(zoomScale))
         context.setLineDash(phase: 1, lengths: [5 / CGFloat(zoomScale), 10 / CGFloat(zoomScale)])
-        context.setStrokeColor(UIColor.blue.cgColor)
+        context.setStrokeColor(UIColor.aviasalesBlue.cgColor)
         
-//        let p = CGMutablePath()
-//
-//        let p1 = CGPoint(x: startPoint!.x + unit*2, y: startPoint!.y)
-//        let p2 = CGPoint(x: p1.x, y: p1.y + unit)
-//        let p3 = CGPoint(x: startPoint!.x + unit*2, y: p2.y)
-//        let points = [startPoint!, p1, p2, p3]
-//
-//        p.move(to: startPoint!)
-//        p.addLines(between: points)
-        //p.closeSubpath()
-        
-        context.move(to: startPoint1)
-        context.addCurve(to: finishPoint1, control1: CGPoint(x: startPoint1.x + coeff, y: startPoint1.y), control2: CGPoint(x: finishPoint1.x - coeff, y: finishPoint1.y))
+        let p = CGMutablePath()
+        p.move(to: startPoint1)
+        p.addCurve(to: finishPoint1, control1: CGPoint(x: startPoint1.x + k, y: startPoint1.y), control2: CGPoint(x: finishPoint1.x - k, y: finishPoint1.y))
+        context.addPath(p)
+        //context.move(to: startPoint1)
+        //context.addCurve(to: finishPoint1, control1: CGPoint(x: startPoint1.x + k, y: startPoint1.y), control2: CGPoint(x: finishPoint1.x - k, y: finishPoint1.y))
         //context.addPath(bezierPath.cgPath)
-        //context.strokePath()
+        context.strokePath()
         
         //context.addLine(to: finishPoint)
         //context.addCurve(to: finishPoint, control1: CGPoint(x: startPoint.x + 160, y: startPoint.y), control2: CGPoint(x: finishPoint.x - 160, y: finishPoint.y))

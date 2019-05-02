@@ -12,7 +12,7 @@
 		7A078C8522783483006E1CA2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7A078C8322783483006E1CA2 /* Main.storyboard */; };
 		7A078C8722783484006E1CA2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7A078C8622783484006E1CA2 /* Assets.xcassets */; };
 		7A078C8A22783484006E1CA2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7A078C8822783484006E1CA2 /* LaunchScreen.storyboard */; };
-		7A078C93227834B9006E1CA2 /* PurpleRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A078C92227834B9006E1CA2 /* PurpleRoute.swift */; };
+		7A078C93227834B9006E1CA2 /* AirportPlace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A078C92227834B9006E1CA2 /* AirportPlace.swift */; };
 		7A078C962278379A006E1CA2 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A078C952278379A006E1CA2 /* API.swift */; };
 		7A078C9822783902006E1CA2 /* ErrorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A078C9722783902006E1CA2 /* ErrorResponse.swift */; };
 		7A078C9A2278390B006E1CA2 /* ResponseHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A078C992278390B006E1CA2 /* ResponseHandler.swift */; };
@@ -21,7 +21,8 @@
 		7A078CA0227863BA006E1CA2 /* BezelPathOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A078C9F227863BA006E1CA2 /* BezelPathOverlayView.swift */; };
 		7A078CA42278890D006E1CA2 /* StartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A078CA32278890D006E1CA2 /* StartViewController.swift */; };
 		7A078CA62278FCC5006E1CA2 /* BezelPathOverlayRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A078CA52278FCC5006E1CA2 /* BezelPathOverlayRenderer.swift */; };
-		7A078CA822799454006E1CA2 /* MyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A078CA722799454006E1CA2 /* MyView.swift */; };
+		7A078CA822799454006E1CA2 /* MyAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A078CA722799454006E1CA2 /* MyAnnotationView.swift */; };
+		7A078CAA227AD8A9006E1CA2 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A078CA9227AD8A9006E1CA2 /* Extensions.swift */; };
 		C16C3E085DA433810C771266 /* Pods_Aviasales_test.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A24C693E69E8253D8ABE2D3 /* Pods_Aviasales_test.framework */; };
 /* End PBXBuildFile section */
 
@@ -35,7 +36,7 @@
 		7A078C8622783484006E1CA2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7A078C8922783484006E1CA2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		7A078C8B22783484006E1CA2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		7A078C92227834B9006E1CA2 /* PurpleRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurpleRoute.swift; sourceTree = "<group>"; };
+		7A078C92227834B9006E1CA2 /* AirportPlace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirportPlace.swift; sourceTree = "<group>"; };
 		7A078C952278379A006E1CA2 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		7A078C9722783902006E1CA2 /* ErrorResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorResponse.swift; sourceTree = "<group>"; };
 		7A078C992278390B006E1CA2 /* ResponseHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponseHandler.swift; sourceTree = "<group>"; };
@@ -44,7 +45,8 @@
 		7A078C9F227863BA006E1CA2 /* BezelPathOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BezelPathOverlayView.swift; sourceTree = "<group>"; };
 		7A078CA32278890D006E1CA2 /* StartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartViewController.swift; sourceTree = "<group>"; };
 		7A078CA52278FCC5006E1CA2 /* BezelPathOverlayRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BezelPathOverlayRenderer.swift; sourceTree = "<group>"; };
-		7A078CA722799454006E1CA2 /* MyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyView.swift; sourceTree = "<group>"; };
+		7A078CA722799454006E1CA2 /* MyAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyAnnotationView.swift; sourceTree = "<group>"; };
+		7A078CA9227AD8A9006E1CA2 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		C29533257761133D097F3205 /* Pods-Aviasales test.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Aviasales test.release.xcconfig"; path = "Pods/Target Support Files/Pods-Aviasales test/Pods-Aviasales test.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -89,7 +91,8 @@
 				7A078C9D22783F23006E1CA2 /* SearchResultViewController.swift */,
 				7A078C9F227863BA006E1CA2 /* BezelPathOverlayView.swift */,
 				7A078CA52278FCC5006E1CA2 /* BezelPathOverlayRenderer.swift */,
-				7A078CA722799454006E1CA2 /* MyView.swift */,
+				7A078CA722799454006E1CA2 /* MyAnnotationView.swift */,
+				7A078CA9227AD8A9006E1CA2 /* Extensions.swift */,
 				7A078C8322783483006E1CA2 /* Main.storyboard */,
 				7A078C8622783484006E1CA2 /* Assets.xcassets */,
 				7A078C8822783484006E1CA2 /* LaunchScreen.storyboard */,
@@ -101,7 +104,7 @@
 		7A078C91227834A7006E1CA2 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				7A078C92227834B9006E1CA2 /* PurpleRoute.swift */,
+				7A078C92227834B9006E1CA2 /* AirportPlace.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -250,14 +253,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7A078CA822799454006E1CA2 /* MyView.swift in Sources */,
+				7A078CA822799454006E1CA2 /* MyAnnotationView.swift in Sources */,
 				7A078C9822783902006E1CA2 /* ErrorResponse.swift in Sources */,
-				7A078C93227834B9006E1CA2 /* PurpleRoute.swift in Sources */,
+				7A078C93227834B9006E1CA2 /* AirportPlace.swift in Sources */,
 				7A078C8222783483006E1CA2 /* SearchViewController.swift in Sources */,
 				7A078C9C22783916006E1CA2 /* NetworkComponents.swift in Sources */,
 				7A078CA0227863BA006E1CA2 /* BezelPathOverlayView.swift in Sources */,
 				7A078CA42278890D006E1CA2 /* StartViewController.swift in Sources */,
 				7A078C962278379A006E1CA2 /* API.swift in Sources */,
+				7A078CAA227AD8A9006E1CA2 /* Extensions.swift in Sources */,
 				7A078C8022783483006E1CA2 /* AppDelegate.swift in Sources */,
 				7A078C9E22783F23006E1CA2 /* SearchResultViewController.swift in Sources */,
 				7A078C9A2278390B006E1CA2 /* ResponseHandler.swift in Sources */,
