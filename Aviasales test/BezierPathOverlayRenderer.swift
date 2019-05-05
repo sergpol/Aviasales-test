@@ -57,7 +57,6 @@ class BezierPathOverlayRenderer: MKPolylineRenderer  {
             let point = self.calculateCube(t: t, p1: startPoint1, p2: CGPoint(x: startPoint1.x + k, y: startPoint1.y), p3: CGPoint(x: finishPoint1.x - k, y: finishPoint1.y), p4: finishPoint1)
             //print("#point: \(point)")
             let mkMapPoint = MKMapPoint(x: Double(point.x) + overlay.boundingMapRect.minX, y: Double(point.y) + overlay.boundingMapRect.minY)
-            //print("#mkMapPoint: \(mkMapPoint.coordinate)")
             myPoints.append(mkMapPoint)
             t = t + 0.001
             //context.draw(plainImage.cgImage!, in: CGRect(x: point.x, y: point.y, width: 64 / CGFloat(zoomScale), height: 64 / CGFloat(zoomScale)))
