@@ -18,11 +18,11 @@
 		7A078C9A2278390B006E1CA2 /* ResponseHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A078C992278390B006E1CA2 /* ResponseHandler.swift */; };
 		7A078C9C22783916006E1CA2 /* NetworkComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A078C9B22783916006E1CA2 /* NetworkComponents.swift */; };
 		7A078C9E22783F23006E1CA2 /* SearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A078C9D22783F23006E1CA2 /* SearchResultViewController.swift */; };
-		7A078CA0227863BA006E1CA2 /* BezelPathOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A078C9F227863BA006E1CA2 /* BezelPathOverlayView.swift */; };
 		7A078CA42278890D006E1CA2 /* StartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A078CA32278890D006E1CA2 /* StartViewController.swift */; };
-		7A078CA62278FCC5006E1CA2 /* BezelPathOverlayRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A078CA52278FCC5006E1CA2 /* BezelPathOverlayRenderer.swift */; };
+		7A078CA62278FCC5006E1CA2 /* BezierPathOverlayRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A078CA52278FCC5006E1CA2 /* BezierPathOverlayRenderer.swift */; };
 		7A078CA822799454006E1CA2 /* MyAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A078CA722799454006E1CA2 /* MyAnnotationView.swift */; };
 		7A078CAA227AD8A9006E1CA2 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A078CA9227AD8A9006E1CA2 /* Extensions.swift */; };
+		7AF1AEB1227E52A800557A6B /* BezierPathPolyline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF1AEB0227E52A800557A6B /* BezierPathPolyline.swift */; };
 		C16C3E085DA433810C771266 /* Pods_Aviasales_test.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A24C693E69E8253D8ABE2D3 /* Pods_Aviasales_test.framework */; };
 /* End PBXBuildFile section */
 
@@ -42,11 +42,11 @@
 		7A078C992278390B006E1CA2 /* ResponseHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponseHandler.swift; sourceTree = "<group>"; };
 		7A078C9B22783916006E1CA2 /* NetworkComponents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkComponents.swift; sourceTree = "<group>"; };
 		7A078C9D22783F23006E1CA2 /* SearchResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultViewController.swift; sourceTree = "<group>"; };
-		7A078C9F227863BA006E1CA2 /* BezelPathOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BezelPathOverlayView.swift; sourceTree = "<group>"; };
 		7A078CA32278890D006E1CA2 /* StartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartViewController.swift; sourceTree = "<group>"; };
-		7A078CA52278FCC5006E1CA2 /* BezelPathOverlayRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BezelPathOverlayRenderer.swift; sourceTree = "<group>"; };
+		7A078CA52278FCC5006E1CA2 /* BezierPathOverlayRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BezierPathOverlayRenderer.swift; sourceTree = "<group>"; };
 		7A078CA722799454006E1CA2 /* MyAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyAnnotationView.swift; sourceTree = "<group>"; };
 		7A078CA9227AD8A9006E1CA2 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		7AF1AEB0227E52A800557A6B /* BezierPathPolyline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BezierPathPolyline.swift; sourceTree = "<group>"; };
 		C29533257761133D097F3205 /* Pods-Aviasales test.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Aviasales test.release.xcconfig"; path = "Pods/Target Support Files/Pods-Aviasales test/Pods-Aviasales test.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -89,8 +89,8 @@
 				7A078CA32278890D006E1CA2 /* StartViewController.swift */,
 				7A078C8122783483006E1CA2 /* SearchViewController.swift */,
 				7A078C9D22783F23006E1CA2 /* SearchResultViewController.swift */,
-				7A078C9F227863BA006E1CA2 /* BezelPathOverlayView.swift */,
-				7A078CA52278FCC5006E1CA2 /* BezelPathOverlayRenderer.swift */,
+				7A078CA52278FCC5006E1CA2 /* BezierPathOverlayRenderer.swift */,
+				7AF1AEB0227E52A800557A6B /* BezierPathPolyline.swift */,
 				7A078CA722799454006E1CA2 /* MyAnnotationView.swift */,
 				7A078CA9227AD8A9006E1CA2 /* Extensions.swift */,
 				7A078C8322783483006E1CA2 /* Main.storyboard */,
@@ -258,14 +258,14 @@
 				7A078C93227834B9006E1CA2 /* AirportPlace.swift in Sources */,
 				7A078C8222783483006E1CA2 /* SearchViewController.swift in Sources */,
 				7A078C9C22783916006E1CA2 /* NetworkComponents.swift in Sources */,
-				7A078CA0227863BA006E1CA2 /* BezelPathOverlayView.swift in Sources */,
 				7A078CA42278890D006E1CA2 /* StartViewController.swift in Sources */,
 				7A078C962278379A006E1CA2 /* API.swift in Sources */,
+				7AF1AEB1227E52A800557A6B /* BezierPathPolyline.swift in Sources */,
 				7A078CAA227AD8A9006E1CA2 /* Extensions.swift in Sources */,
 				7A078C8022783483006E1CA2 /* AppDelegate.swift in Sources */,
 				7A078C9E22783F23006E1CA2 /* SearchResultViewController.swift in Sources */,
 				7A078C9A2278390B006E1CA2 /* ResponseHandler.swift in Sources */,
-				7A078CA62278FCC5006E1CA2 /* BezelPathOverlayRenderer.swift in Sources */,
+				7A078CA62278FCC5006E1CA2 /* BezierPathOverlayRenderer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -20,12 +20,14 @@ class SearchResultViewController: UIViewController {
             placeCoordinate = CLLocationCoordinate2D(latitude: place.location.lat, longitude: place.location.lon)
         }
     }
-    var line = CAShapeLayer()
-    var planeImageView = UIImageView()
-    var animation = CAKeyframeAnimation(keyPath: "position")
     
     var startPoint: CGPoint = .zero
     var finishPoint: CGPoint = .zero
+    var polyline: MKGeodesicPolyline!
+    var planeAnnotation: MKPointAnnotation!
+    var planeAnnotationPosition: Int = 0
+    var planeDirection: Double?
+    var bezierPolyline: BezierPathPolyline!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,111 +38,125 @@ class SearchResultViewController: UIViewController {
         spbPointAnnotation.coordinate = spbCoordinate
         spbPointAnnotation.title = "LED"
         mapView.addAnnotation(spbPointAnnotation)
-        
+
         let pointAnnotation = MKPointAnnotation()
         pointAnnotation.coordinate = placeCoordinate
         pointAnnotation.title = place.iata
         mapView.addAnnotation(pointAnnotation)
         
+        let annotation = MKPointAnnotation()
+        annotation.title = NSLocalizedString("Plane", comment: "Plane marker")
+        mapView.addAnnotation(annotation)
+        self.planeAnnotation = annotation
+        
+        startPoint = mapView.convert(spbCoordinate, toPointTo: mapView)
+        finishPoint = mapView.convert(placeCoordinate, toPointTo: mapView)
+        
         let points: [CLLocationCoordinate2D]
         points = [spbCoordinate, placeCoordinate]
-        let polyline = MKPolyline(coordinates: points, count: 2)
-        
-        let rect = polyline.boundingMapRect
-        //var region = MKCoordinateRegion(rect)
-        //region.span = MKCoordinateSpan(latitudeDelta: 10, longitudeDelta: 10)
-        mapView.setVisibleMapRect(rect, edgePadding: UIEdgeInsets(top: 60, left: 60, bottom: 60, right: 60), animated: true)
-        
-        startPoint = mapView.convert(spbCoordinate, toPointTo: view)
-        finishPoint = mapView.convert(placeCoordinate, toPointTo: view)
-        
+        polyline = MKGeodesicPolyline(coordinates: points, count: 2)
         //mapView.addOverlay(polyline)
         
-        planeImageView.frame = CGRect(x: startPoint.x - 14, y: startPoint.y - 14, width: 28, height: 28)
-        planeImageView.image = UIImage(named: "plane")
+        let mkPoints = [MKMapPoint(spbCoordinate), MKMapPoint(placeCoordinate)]
+        bezierPolyline = BezierPathPolyline(points: mkPoints, count: 2)
+        mapView.addOverlay(bezierPolyline)
         
-        animation.rotationMode = .rotateAuto
-        animation.duration = 4
-        animation.isRemovedOnCompletion = false
-        //planeImageView.layer.add(animation, forKey: "path")
-        view.addSubview(planeImageView)
-    
-        let bezelPathOverlay = BezelPathOverlayView(polyline: polyline)
-        self.mapView.addOverlay(bezelPathOverlay)
+        let rect = polyline.boundingMapRect
+        var region = MKCoordinateRegion(rect)
+        let rectView = mapView.convert(region, toRectTo: mapView)
         
-        drawBezelPath()
-//        UIView.animate(withDuration: 3, delay: 1, options: [], animations: {
-//            planeImageView.frame = CGRect(x: finishPoint.x - 14, y: finishPoint.y - 14, width: 28, height: 28)
-//        }, completion: nil)
-        
-//        let myView = MyView(frame: CGRect(x: 0, y: 100, width: 200, height: 200))
-//        myView.backgroundColor = .white
-//        view.addSubview(myView)
+        //region.span = MKCoordinateSpan(latitudeDelta: 10, longitudeDelta: 10)
+        mapView.setVisibleMapRect(rect, edgePadding: UIEdgeInsets(top: 60, left: 60, bottom: 60, right: 60), animated: true)
     }
     
-    func drawBezelPath() {
-        line.removeFromSuperlayer()
-        //planeImageView.removeFromSuperview()
+    @objc func updatePlanePosition() {
+        let step = 5
+        guard planeAnnotationPosition + step < bezierPolyline.points1.count
+            else { return }
+
+        let points = bezierPolyline.points1
+        let previousMapPoint = points[planeAnnotationPosition]
+        self.planeAnnotationPosition = self.planeAnnotationPosition + step
+        let nextMapPoint = points[planeAnnotationPosition]
+
+        planeDirection = directionBetweenPoints(sourcePoint: previousMapPoint, nextMapPoint)
+        planeAnnotation.coordinate = nextMapPoint.coordinate
+        mapView(mapView, viewFor: planeAnnotation)
         
-        startPoint = mapView.convert(spbCoordinate, toPointTo: view)
-        finishPoint = mapView.convert(placeCoordinate, toPointTo: view)
+        perform(#selector(updatePlanePosition), with: nil, afterDelay: 0.03)
+    }
+    
+    private func directionBetweenPoints(sourcePoint: MKMapPoint, _ destinationPoint: MKMapPoint) -> Double {
+        let x = destinationPoint.x - sourcePoint.x
+        let y = destinationPoint.y - sourcePoint.y
         
-        planeImageView.frame = CGRect(x: startPoint.x - 14, y: startPoint.y - 14, width: 28, height: 28)
-        
-        let bezelPath = UIBezierPath()
-        bezelPath.move(to: startPoint)
-        
-        let k: CGFloat = startPoint.x < finishPoint.x ? finishPoint.x : -startPoint.x
-        bezelPath.addCurve(to: finishPoint, controlPoint1: CGPoint(x: startPoint.x + k, y: startPoint.y), controlPoint2: CGPoint(x: finishPoint.x - k, y: finishPoint.y))
-        //bezelPath.close()
-        
-        line = CAShapeLayer()
-        line.path = bezelPath.cgPath
-        line.lineDashPattern = [5, 10]
-        line.fillColor = UIColor.clear.cgColor
-        line.strokeColor = UIColor.blue.cgColor
-        line.lineWidth = 5
-        
-        view.layer.addSublayer(line)
-        animation.path = bezelPath.cgPath
-        
-        line.isHidden = true
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: {
-            self.planeImageView.isHidden = false
-            self.planeImageView.layer.add(self.animation, forKey: "path")
-        })
+        return radiansToDegrees(radians: atan2(y, x)).truncatingRemainder(dividingBy: 360)
+    }
+    
+    private func radiansToDegrees(radians: Double) -> Double {
+        return radians * 180 / Double.pi
+    }
+    
+    private func degreesToRadians(degrees: Double) -> Double {
+        return degrees * Double.pi / 180
     }
 }
 
 extension SearchResultViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
-        if let myOverlay = overlay as? BezelPathOverlayView {
-            let renderer = BezelPathOverlayRenderer(overlay: myOverlay, startPoint: startPoint, finishPoint: finishPoint)
+        if let myOverlay = overlay as? BezierPathPolyline {
+            let renderer = BezierPathOverlayRenderer(polyline: bezierPolyline, startPoint: startPoint, finishPoint: finishPoint)
             return renderer
         }
-        return MKOverlayRenderer()
+
+        let renderer = MKPolylineRenderer(polyline: polyline)
+        renderer.lineWidth = 5.0
+        renderer.strokeColor = UIColor.aviasalesBlue
+        renderer.lineDashPattern = [8, 8]
+        return renderer
     }
     
     func mapView(_ mapView: MKMapView, regionWillChangeAnimated animated: Bool) {
-//        drawBezelPath()
-        line.isHidden = true
-        //planeImageView.layer.speed = 0
-        planeImageView.isHidden = true
+
     }
     
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
-        drawBezelPath()
-        //planeImageView.layer.speed = 1
+       
     }
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         if let title = annotation.title {
-            let myAnnotationView = MyAnnotationView()
-            myAnnotationView.titleLabel.text = "\(title ?? "")"
-            return myAnnotationView
+            if title == "Plane" {
+                let planeIdentifier = "Plane"
+                
+                let annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: planeIdentifier)
+                    ?? MKAnnotationView(annotation: annotation, reuseIdentifier: planeIdentifier)
+                
+                annotationView.image = UIImage(named: "plane")
+                if let direction = planeDirection {
+                    annotationView.transform = CGAffineTransform(rotationAngle: CGFloat(degreesToRadians(degrees: direction)))
+                }
+                return annotationView
+            }
+            else {
+                let myAnnotationView = MyAnnotationView()
+                myAnnotationView.titleLabel.text = "\(title ?? "")"
+                return myAnnotationView
+            }
         }
         
         return MKAnnotationView(annotation: annotation, reuseIdentifier: "annotation")
+    }
+    
+    func mapViewDidFinishRenderingMap(_ mapView: MKMapView, fullyRendered: Bool) {
+        self.updatePlanePosition()
+        
+        if let myOverlay = mapView.overlays.first(where: {(overlay) in
+            return overlay is BezierPathPolyline
+        }) as? BezierPathPolyline {
+            if !myOverlay.points1.isEmpty {
+                self.updatePlanePosition()
+            }
+        }
     }
 }
