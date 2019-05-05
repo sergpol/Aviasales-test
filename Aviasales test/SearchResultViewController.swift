@@ -28,6 +28,7 @@ class SearchResultViewController: UIViewController {
     var planeAnnotationPosition: Int = 0
     var planeDirection: Double?
     var bezierPolyline: BezierPathPolyline!
+    var planeAnnotationView: MKAnnotationView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,6 +50,8 @@ class SearchResultViewController: UIViewController {
         mapView.addAnnotation(annotation)
         self.planeAnnotation = annotation
         
+        mapView.register(MKAnnotationView.self, forAnnotationViewWithReuseIdentifier: "Plane")
+        
         startPoint = mapView.convert(spbCoordinate, toPointTo: mapView)
         finishPoint = mapView.convert(placeCoordinate, toPointTo: mapView)
         
@@ -67,6 +70,8 @@ class SearchResultViewController: UIViewController {
         
         //region.span = MKCoordinateSpan(latitudeDelta: 10, longitudeDelta: 10)
         mapView.setVisibleMapRect(rect, edgePadding: UIEdgeInsets(top: 60, left: 60, bottom: 60, right: 60), animated: true)
+        
+        updatePlanePosition()
     }
     
     @objc func updatePlanePosition() {
@@ -129,14 +134,19 @@ extension SearchResultViewController: MKMapViewDelegate {
             if title == "Plane" {
                 let planeIdentifier = "Plane"
                 
-                let annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: planeIdentifier)
-                    ?? MKAnnotationView(annotation: annotation, reuseIdentifier: planeIdentifier)
-                
-                annotationView.image = UIImage(named: "plane")
-                if let direction = planeDirection {
-                    annotationView.transform = CGAffineTransform(rotationAngle: CGFloat(degreesToRadians(degrees: direction)))
+                if let annotationView = self.planeAnnotationView {
+                    
                 }
-                return annotationView
+                else {
+                    self.planeAnnotationView = mapView.dequeueReusableAnnotationView(withIdentifier: planeIdentifier)
+                }
+                self.planeAnnotationView.image = UIImage(named: "plane")
+                
+                if let direction = planeDirection {
+                    print(CGFloat(degreesToRadians(degrees: direction)))
+                    self.planeAnnotationView?.transform = CGAffineTransform(rotationAngle: CGFloat(degreesToRadians(degrees: direction)))
+                }
+                return self.planeAnnotationView
             }
             else {
                 let myAnnotationView = MyAnnotationView()

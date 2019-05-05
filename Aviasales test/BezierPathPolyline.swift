@@ -13,8 +13,9 @@ class BezierPathPolyline: MKPolyline {
     var points: [MKMapPoint] = []
     
     convenience init(start: CLLocationCoordinate2D, end: CLLocationCoordinate2D) {
-        let line = [MKMapPoint(start), MKMapPoint(end)]
-        self.init(coordinates: [start, end], count: line.count)
+        self.init(coordinates: [start, end], count: 2)
+        
+        points = [MKMapPoint(start), MKMapPoint(end)]
     }
 }
 

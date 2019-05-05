@@ -33,10 +33,8 @@ class BezierPathOverlayRenderer: MKPolylineRenderer  {
     
     override func draw(_ mapRect: MKMapRect, zoomScale: MKZoomScale, in context: CGContext) {
         let unit = CGFloat(overlay.boundingMapRect.width)
-        let normalPosition =  startPoint.x < finishPoint.x
+        let normalPosition = finishPoint.x < 0 ? startPoint.x < finishPoint.x : startPoint.x > finishPoint.x
 
-        print(startPoint.x)
-        
         let startPoint1 = normalPosition ? CGPoint.zero : CGPoint(x: overlay.boundingMapRect.width, y: 0)
         let finishPoint1 = normalPosition ? CGPoint(x: overlay.boundingMapRect.width, y: overlay.boundingMapRect.height) : CGPoint(x: 0, y: overlay.boundingMapRect.height)
         let k = normalPosition ? unit : -unit
