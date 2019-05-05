@@ -126,7 +126,7 @@ extension SearchResultViewController: MKMapViewDelegate {
     }
     
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
-       
+       updatePlanePosition()
     }
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
@@ -134,10 +134,7 @@ extension SearchResultViewController: MKMapViewDelegate {
             if title == "Plane" {
                 let planeIdentifier = "Plane"
                 
-                if let annotationView = self.planeAnnotationView {
-                    
-                }
-                else {
+                if self.planeAnnotationView == nil {
                     self.planeAnnotationView = mapView.dequeueReusableAnnotationView(withIdentifier: planeIdentifier)
                 }
                 self.planeAnnotationView.image = UIImage(named: "plane")
@@ -164,9 +161,7 @@ extension SearchResultViewController: MKMapViewDelegate {
         if let myOverlay = mapView.overlays.first(where: {(overlay) in
             return overlay is BezierPathPolyline
         }) as? BezierPathPolyline {
-            if !myOverlay.points.isEmpty {
-                self.updatePlanePosition()
-            }
+            self.updatePlanePosition()
         }
     }
 }
