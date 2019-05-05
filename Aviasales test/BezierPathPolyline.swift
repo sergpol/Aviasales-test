@@ -10,8 +10,7 @@ import Foundation
 import MapKit
 
 class BezierPathPolyline: MKPolyline {
-    var points1: [MKMapPoint] = []
-    var startPoint: CGPoint = .zero
+    var points: [MKMapPoint] = []
     
     convenience init(start: CLLocationCoordinate2D, end: CLLocationCoordinate2D) {
         let line = [MKMapPoint(start), MKMapPoint(end)]

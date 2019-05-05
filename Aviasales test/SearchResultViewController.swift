@@ -71,10 +71,10 @@ class SearchResultViewController: UIViewController {
     
     @objc func updatePlanePosition() {
         let step = 5
-        guard planeAnnotationPosition + step < bezierPolyline.points1.count
+        guard planeAnnotationPosition + step < bezierPolyline.points.count
             else { return }
 
-        let points = bezierPolyline.points1
+        let points = bezierPolyline.points
         let previousMapPoint = points[planeAnnotationPosition]
         self.planeAnnotationPosition = self.planeAnnotationPosition + step
         let nextMapPoint = points[planeAnnotationPosition]
@@ -154,7 +154,7 @@ extension SearchResultViewController: MKMapViewDelegate {
         if let myOverlay = mapView.overlays.first(where: {(overlay) in
             return overlay is BezierPathPolyline
         }) as? BezierPathPolyline {
-            if !myOverlay.points1.isEmpty {
+            if !myOverlay.points.isEmpty {
                 self.updatePlanePosition()
             }
         }

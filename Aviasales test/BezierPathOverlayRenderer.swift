@@ -51,14 +51,11 @@ class BezierPathOverlayRenderer: MKPolylineRenderer  {
         context.addPath(p)
         context.strokePath()
         
-        var t: CGFloat = 0.0
-        let startPoint = self.calculateCube(t: t, p1: startPoint1, p2: CGPoint(x: startPoint1.x + k, y: startPoint1.y), p3: CGPoint(x: finishPoint1.x - k, y: finishPoint1.y), p4: finishPoint1)
-        print("#point: \(startPoint)")
-        
+        var t: CGFloat = 0.0        
         var myPoints: [MKMapPoint] = []
         while t <= 1 {
             let point = self.calculateCube(t: t, p1: startPoint1, p2: CGPoint(x: startPoint1.x + k, y: startPoint1.y), p3: CGPoint(x: finishPoint1.x - k, y: finishPoint1.y), p4: finishPoint1)
-            print("#point: \(point)")
+            //print("#point: \(point)")
             let mkMapPoint = MKMapPoint(x: Double(point.x) + overlay.boundingMapRect.minX, y: Double(point.y) + overlay.boundingMapRect.minY)
             //print("#mkMapPoint: \(mkMapPoint.coordinate)")
             myPoints.append(mkMapPoint)
@@ -71,16 +68,8 @@ class BezierPathOverlayRenderer: MKPolylineRenderer  {
                                                   count: myPoints.count)
             myOverlay.getCoordinates(&coords, range: NSRange(location: 0, length: myPoints.count))
             //print("###\(coords)")
-            myOverlay.startPoint = startPoint
-            myOverlay.points1 = myPoints
+            myOverlay.points = myPoints
         }
-//        if let plainImage = UIImage(named: "plane") {
-            //let point = self.calculateCube(t: t, p1: startPoint1, p2: CGPoint(x: startPoint1.x + k, y: startPoint1.y), p3: CGPoint(x: finishPoint1.x - k, y: finishPoint1.y), p4: finishPoint1)
-//            context.draw(plainImage.cgImage!, in: CGRect(x: startPoint1.x, y: startPoint1.y, width: 64 / CGFloat(zoomScale), height: 64 / CGFloat(zoomScale)))
-//            //context.translateBy(x: point.x, y: point.y)
-//        }
-            //context.draw(plainImage.cgImage!, in: CGRect(x: startPoint1.x, y: startPoint1.y - 64 / CGFloat(zoomScale), width: 64 / CGFloat(zoomScale), height: 64 / CGFloat(zoomScale)))
-//        }
     }
 
     private func calculateCube(t: CGFloat, p1: CGPoint, p2: CGPoint, p3: CGPoint, p4: CGPoint) -> CGPoint {
