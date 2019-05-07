@@ -92,10 +92,10 @@ class SearchResultViewController: UIViewController {
     }
     
     private func directionBetweenPoints(sourcePoint: MKMapPoint, _ destinationPoint: MKMapPoint) -> Double {
-        let x = destinationPoint.coordinate.latitude - sourcePoint.coordinate.latitude
-        let y = destinationPoint.coordinate.longitude - sourcePoint.coordinate.longitude
+        let x = destinationPoint.x - sourcePoint.x
+        let y = destinationPoint.y - sourcePoint.y
         
-        return radiansToDegrees(radians: atan2(y, x)).truncatingRemainder(dividingBy: 360) - 90
+        return radiansToDegrees(radians: atan2(y, x)).truncatingRemainder(dividingBy: 360)
     }
     
     private func radiansToDegrees(radians: Double) -> Double {
