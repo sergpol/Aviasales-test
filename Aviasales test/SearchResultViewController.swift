@@ -53,7 +53,7 @@ class SearchResultViewController: UIViewController {
         var coordinates: [CLLocationCoordinate2D] = []
         var t = 0.0
         while t < 1 {
-            let coordinate = calculateCube(t: t,
+            let coordinate = calculateCubeBezier(t: t,
                                       p1: spbCoordinate,
                                       p2: CLLocationCoordinate2D(latitude: placeCoordinate.latitude, longitude: spbCoordinate.longitude),
                                       p3: CLLocationCoordinate2D(latitude: spbCoordinate.latitude, longitude: placeCoordinate.longitude),
@@ -92,10 +92,10 @@ class SearchResultViewController: UIViewController {
     }
     
     private func directionBetweenPoints(sourcePoint: MKMapPoint, _ destinationPoint: MKMapPoint) -> Double {
-        let x = destinationPoint.x - sourcePoint.x
-        let y = destinationPoint.y - sourcePoint.y
+        let x = destinationPoint.coordinate.latitude - sourcePoint.coordinate.latitude
+        let y = destinationPoint.coordinate.longitude - sourcePoint.coordinate.longitude
         
-        return radiansToDegrees(radians: atan2(y, x))
+        return radiansToDegrees(radians: atan2(y, x)).truncatingRemainder(dividingBy: 360) - 90
     }
     
     private func radiansToDegrees(radians: Double) -> Double {
@@ -106,7 +106,7 @@ class SearchResultViewController: UIViewController {
         return degrees * Double.pi / 180
     }
     
-    private func calculateCube(t: Double, p1: CLLocationCoordinate2D, p2: CLLocationCoordinate2D, p3: CLLocationCoordinate2D, p4: CLLocationCoordinate2D) -> CLLocationCoordinate2D {
+    private func calculateCubeBezier(t: Double, p1: CLLocationCoordinate2D, p2: CLLocationCoordinate2D, p3: CLLocationCoordinate2D, p4: CLLocationCoordinate2D) -> CLLocationCoordinate2D {
         let mt = 1 - t
         let mt2 = mt*mt
         let t2 = t*t
