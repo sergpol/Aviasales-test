@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import MapKit
 
-class MyAnnotationView: MKAnnotationView {
+class AirportAnnotationView: MKAnnotationView {
     var titleLabel = UILabel(frame: CGRect(x: -24, y: -16, width: 58, height: 32))
     
     override init(annotation: MKAnnotation?, reuseIdentifier: String?) {
