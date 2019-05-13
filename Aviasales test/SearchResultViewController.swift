@@ -125,9 +125,11 @@ class SearchResultViewController: UIViewController {
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        planeAnnotationView.isHidden = true
         coordinator.animateAlongsideTransition(in: self.view, animation: { (context) in
             
         }, completion: { [weak self] (context) in
+            self?.planeAnnotationView.isHidden = false
             self?.setVisibleMapRect()
         })
     }
