@@ -69,8 +69,7 @@ class SearchResultViewController: UIViewController {
         polyline = MKPolyline(coordinates: coordinates, count: coordinates.count)
         mapView.addOverlay(polyline)
         
-        let rect = polyline.boundingMapRect
-        mapView.setVisibleMapRect(rect, edgePadding: UIEdgeInsets(top: 60, left: 60, bottom: 60, right: 60), animated: true)
+        setVisibleMapRect()
         
         let displayLink = CADisplayLink(target: self, selector: #selector(updatePlanePosition))
         displayLink.add(to: .main, forMode: RunLoop.Mode.common)
@@ -123,6 +122,19 @@ class SearchResultViewController: UIViewController {
         let x = a*p1.latitude + b*p2.latitude + c*p3.latitude + d*p4.latitude
         let y = a*p1.longitude + b*p2.longitude + c*p3.longitude + d*p4.longitude
         return CLLocationCoordinate2D(latitude: x, longitude: y)
+    }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        coordinator.animateAlongsideTransition(in: self.view, animation: { (context) in
+            
+        }, completion: { [weak self] (context) in
+            self?.setVisibleMapRect()
+        })
+    }
+    
+    private func setVisibleMapRect() {
+        let rect = polyline.boundingMapRect
+        mapView.setVisibleMapRect(rect, edgePadding: UIEdgeInsets(top: 60, left: 60, bottom: 60, right: 60), animated: true)
     }
 }
 
