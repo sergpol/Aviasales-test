@@ -22,7 +22,7 @@ class SearchResultViewController: UIViewController {
     }
     
     var polyline: MKPolyline!
-    var planeAnnotation: PlaneAnnotation!
+    var planeAnnotation = PlaneAnnotation()
     var planeAnnotationPosition: Int = 0
     var planeDirection: Double?
     var planeAnnotationView: MKAnnotationView!
@@ -34,20 +34,24 @@ class SearchResultViewController: UIViewController {
         
         mapView.delegate = self
         
-        let spbPointAnnotation = MKPointAnnotation()
-        spbPointAnnotation.coordinate = spbCoordinate
-        spbPointAnnotation.title = "LED"
+        let spbPointAnnotation: MKPointAnnotation = {
+            let annotation = MKPointAnnotation()
+            annotation.coordinate = spbCoordinate
+            annotation.title = "LED"
+            return annotation
+        }()
         mapView.addAnnotation(spbPointAnnotation)
 
-        let pointAnnotation = MKPointAnnotation()
-        pointAnnotation.coordinate = placeCoordinate
-        pointAnnotation.title = place.iata
+        let pointAnnotation: MKPointAnnotation = {
+            let annotation = MKPointAnnotation()
+            annotation.coordinate = placeCoordinate
+            annotation.title = place.iata
+            return annotation
+        }()
         mapView.addAnnotation(pointAnnotation)
         
-        let annotation = PlaneAnnotation()
-        mapView.addAnnotation(annotation)
-        self.planeAnnotation = annotation
-        
+        mapView.isRotateEnabled = false
+        mapView.addAnnotation(planeAnnotation)
         mapView.register(MKAnnotationView.self, forAnnotationViewWithReuseIdentifier: "Plane")
         
         var coordinates: [CLLocationCoordinate2D] = []
